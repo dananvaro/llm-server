@@ -5,6 +5,9 @@ services:
 
     expose:
       - "8000"
+      
+    volumes:
+      - /mnt/sdb/models:/app/models
     
     command: >
       python -m vllm.entrypoints.openai.api_server
@@ -17,6 +20,7 @@ services:
 #      --gpu-memory-utilization 0.75
 
     restart: unless-stopped
+    ipc: host
 
     networks:
       - ai-patients-network
