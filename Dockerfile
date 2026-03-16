@@ -14,9 +14,9 @@ RUN apt-get update && apt-get install -y \
     git wget curl \
     build-essential \
     cmake \
-    && rm -f /var/lib/apt/list/*
+    && rm -rf /var/lib/apt/list/*
 
-RUN pip install -upgrade pip
+RUN pip install --upgrade pip
 RUN pip install --no-cache-dir vllm
 RUN pip install --no-cache-dir --upgrade huggingface_hub
 
