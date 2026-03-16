@@ -1,0 +1,35 @@
+services:
+  vllm-gpt-oss-20b:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vllm-gpt-oss-20b
+
+    expose:
+      - "8000"
+    
+    command: >
+      python -m vllm.entrypoints.openai.api_server
+      --host 0.0.0.0
+      --port 8000
+      --model /app/models/gpt-oss-20b
+      --served-model-name gpt-oss-20b
+      --max_model_len 16384
+      --cpu-offload-gb 40
+#      --gpu-memory-utilization 0.75
+
+    restart: unless-stopped
+
+    networks:
+      - ai-patients-network
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+networks:
+  ai-patients-network:
+    external: true

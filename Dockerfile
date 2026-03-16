@@ -21,4 +21,4 @@ RUN pip install --no-cache-dir vllm
 RUN pip install --no-cache-dir --upgrade huggingface_hub
 
 # Donwload LLM to into /app
-RUN hf download openai/gpt-oss-120b --local-dir /app/models/gpt-oss-120b
+RUN hf download openai/gpt-oss-20b --local-dir /app/models/gpt-oss-20b
