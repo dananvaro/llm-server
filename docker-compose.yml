@@ -1,8 +1,6 @@
 services:
   vllm-gpt-oss-20b:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: vllm/vllm-openai:latest
     container_name: vllm-gpt-oss-20b
 
     expose:
