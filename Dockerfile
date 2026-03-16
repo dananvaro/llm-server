@@ -19,6 +19,3 @@ RUN apt-get update && apt-get install -y \
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir vllm
 RUN pip install --no-cache-dir --upgrade huggingface_hub
-
-# Donwload LLM to into /app
-RUN hf download openai/gpt-oss-20b --local-dir /app/models/gpt-oss-20b
