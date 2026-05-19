@@ -1,30 +1,32 @@
 services:
-  vllm-gpt-oss-20b:
+  vLLM-Qwen:
     image: vllm/vllm-openai:latest
-    container_name: vllm-gpt-oss-20b
+    container_name: vllm-qwen
 
-    expose:
-      - "8000"
-      
-    volumes:
-      - /mnt/sdb/models:/app/models
-    
+
+
+    environment:
+      HF_HUB_CACHE: /mnt/data/vLLM/models
+      VLLM_LOGGING_LEVEL: DEBUG
+
+
+    ports:
+      - "127.0.0.1:15050:8000"
     command: >
-      --model /app/models/gpt-oss-20b
-      --served-model-name gpt-oss-20b
+      --model QuantTrio/Qwen3.5-27B-AWQ
+      --served-model-name Qwen3.5-27B-AWQ
+      --quantization awq_marlin
+      --trust-remote-code
+      --language-model-only
       --host 0.0.0.0
       --port 8000
-      --model /app/models/gpt-oss-20b
-      --served-model-name gpt-oss-20b
-      --max_model_len 8192
-      --cpu-offload-gb 40
-#      --gpu-memory-utilization 0.75
-
+      --max-model-len 8192
+      --gpu-memory-utilization 0.88
+      --max-num-seqs 12
+      --default-chat-template-kwargs '{"enable_thinking": false}'
+      --api-key ${VLLM_API_KEY}
     restart: unless-stopped
     ipc: host
-
-    networks:
-      - ai-patients-network
 
     deploy:
       resources:
@@ -33,6 +35,3 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
-networks:
-  ai-patients-network:
-    external: true
